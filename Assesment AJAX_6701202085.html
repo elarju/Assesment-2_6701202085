@@ -10,7 +10,20 @@
   </head>
   <body>
     <h1>Space Developer Agencies</h1>
-    <table id="universityTable">
+
+    <form id="filterForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" />
+      <label for="country">Country:</label>
+      <input type="text" id="country" name="country" />
+      <label for="domain">Domain:</label>
+      <input type="text" id="domain" name="domain" />
+      <label for="web_pages">Web Pages:</label>
+      <input type="text" id="web_pages" name="web_pages" />
+      <button type="submit">Filter</button>
+    </form>
+
+    <table id="universityTable" class="display">
       <thead>
         <tr>
           <th>Name</th>
@@ -26,7 +39,7 @@
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script>
       $(document).ready(function () {
-        $("#universityTable").DataTable({
+        var table = $("#universityTable").DataTable({
           ajax: {
             url: "http://universities.hipolabs.com/search?country=United+Kingdom",
             dataSrc: "",
@@ -42,6 +55,14 @@
               },
             },
           ],
+        });
+
+        $("#filterForm").on("submit", function (e) {
+          e.preventDefault();
+          var formData = $(this).serialize();
+          table.ajax
+            .url("http://universities.hipolabs.com/search?" + formData)
+            .load();
         });
       });
     </script>
